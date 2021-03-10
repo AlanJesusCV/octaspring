@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout_base}">
+<head>
+<!-- Import Bootstrap -->
+
+</head>
+
+<body>
+
+	<div layout:fragment="content">
+		<div class="row">
+			<div class="col-lg-8">
+			<div th:if="${listaRole.isEmpty()}"> 
+			 <h4>No se encontraron registros</h4>
+			</div>
+			
+			<div th:if="${! listaRole.isEmpty()}">
+				<table id="table-1" class="table">
+						<thead>
+							<tr>
+								<td>#</td>
+								<td>Role</td>
+								<td>Descripcion</td>
+								<td>Estatus</td>
+								<td>Acciones</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="item, iStat: ${listaRole}">
+								<td th:text="${iStat.count}"></td>
+								<td th:text="${item.name}"></td>
+								<td th:text="${item.description}"></td>
+								<td th:text="${item.status} == 1 ? 'Activo':'Inactivo'"></td>
+
+								<td>
+								<a class="btn btn-danger" th:href="@{'/role-delete/'+${item.id}}">Eliminar</a> 
+								<a class="btn btn-info" th:href="@{'/role-status/'+${item.id}}+'/'+${item.status}">Status</a> 
+								<a class="btn btn-primary"th:href="@{'/role-update/'+${item.id}}">Actualizar</a>
+								
+								</td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+			</div>
+			</div>
+			<div class="col-lg-4">
+			<h5 th:text="${action}"></h5>
+				<form th:action="@{/role-create}" method="post" th:object="${role}">
+					<input type="hidden" class="form-control" th:field="*{id}">
+					<label>Role</label> 
+					<input type="text" class="form-control"th:field="*{name}" />
+					<label>Descripcion</label> 
+					<input type="text" class="form-control" th:field="*{description}" /> 
+					
+					<button type="submit" class="btn btn-primary" th:text="${action}"></button>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+

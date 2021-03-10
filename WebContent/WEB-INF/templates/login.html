@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout_base}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="row my-5">
+		<div class="col-lg-8"></div>
+		<div class="col-lg-4">
+			<div th:if="${param.error}" class="alert alert-banger">
+				Usuario y/o contraseña incorrectos
+			</div>
+		</div>
+			<div class="col-lg-4">
+				<form method="post" th:action="@{login}" action="#">
+				<label class="form-label" for="input-1">Correo Electronico</label>
+				<input name="username" class="form-control" placeholder="Correo Elctronico" type="email" />
+				<label class="form-label" for="input-1">Contrasena</label>
+				<input name="password" class="form-control" placeholder="Contrasena" type="password" />
+				<div class="d-grid gap-2">
+					<button class="btn btn-primary">Iniciar Sesion</button>
+				</div>
+				</form>
+			</div>
+		</div>	
+	</div>	
+</body>
+</html>

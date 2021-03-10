@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout_base}">
+<head>
+<!-- Import Bootstrap -->
+
+</head>
+
+<body>
+
+	<div layout:fragment="content">
+		<div class="row">
+			<div class="col-lg-8">
+			<div th:if="${listaTL.isEmpty()}"> 
+			 <h4>No se encontraron registros</h4>
+			</div>
+			
+			<div th:if="${! listaTL.isEmpty()}">
+				<table id="table-1" class="table">
+						<thead>
+							<tr>
+								<td>#</td>
+								<td>Categoria</td>
+								<td>Descripcion</td>
+								<td>Imagen</td>
+								<td>Estatus</td>
+								<td>Accione</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="item, iStat: ${listaTL}">
+								<td th:text="${iStat.count}"></td>
+								<td th:text="${item.name}"></td>
+								<td th:text="${item.description}"></td>
+								<td th:text="${item.image}"></td>
+								<td th:text="${item.status} == 1 ? 'Activo':'Inactivo'"></td>
+
+								<td>
+								<a class="btn btn-danger" th:href="@{'/category-delete/'+${item.id}}">Eliminar</a> 
+								<a class="btn btn-info" th:href="@{'/category-status/'+${item.id}}+'/'+${item.status}">Status</a> 
+								<a class="btn btn-primary"th:href="@{'/category-update/'+${item.id}}">Actualizar</a>
+								
+								</td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+			</div>
+			</div>
+			<div class="col-lg-4">
+			<h5 th:text="${action}"></h5>
+			<div class="alert alert-danger" th:if="#{#fields.hasErrors('*')}">
+				<ul><li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li></ul>
+			</div>
+				<form th:action="@{/category-create}" method="post" th:object="${category}" enctype="multipart/form-data">
+					<input type="hidden" class="form-control" th:field="*{id}">
+					<label>Category</label> 
+					<input type="text" class="form-control"th:field="*{name}" />
+					<label>Descripcion</label> 
+					<input type="text" class="form-control" th:field="*{description}" /> 
+					<label>image</label>
+					<input type="file"  name="file" />
+					<button type="submit" class="btn btn-primary" th:text="${action}"></button>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+
+<!-- <div class="col-lg-8">
+				<div th:if="${listTL.isEmpty()}">
+					<h4>No se encontraron registros</h4>
+				</div>
+				<div>
+					
+				</div>
+			</div>
+			<div class="">
+				
+			</div> -->
