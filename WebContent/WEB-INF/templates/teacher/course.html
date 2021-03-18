@@ -1,0 +1,192 @@
+<html layout:decorate="~{layout/layout_base}">
+<head>
+<title>Cursos</title>
+</head>
+<body>
+	<div layout:fragment="content" style="width: 1400px;">
+		<div class="container">
+	        <div class="jumbotron bg-dark py-4 px-4 text-white">
+	            <div class="col-lg-12">
+	                <h1 class="display-4">Curso</h1>
+	            </div>
+	            <div class="row">
+	                <div class="col-lg-10">
+	                    <p class="lead"></p>
+	                </div>
+	                <div class="col-lg-2">
+	                    <button type="button" class="btn btn-primary ml-auto" data-bs-toggle="modal"
+	                        data-bs-target="#exampleModal"><i class="fa fa-plus"></i> Nuevo Curso</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+		<div class="container">
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col" style="text-align: center">#</th>
+						<th scope="col" style="text-align: center">Titulo</th>
+						<th scope="col" style="text-align: center">Subtitulo</th>
+						<th scope="col" style="text-align: center">Descripcion</th>
+						<th scope="col" style="text-align: center">Precio</th>
+						<th scope="col" style="text-align: center">Status</th>
+						<th scope="col" style="text-align: center">Lang</th>
+						<th scope="col" style="text-align: center">Level</th>
+						<th scope="col" style="text-align: center">Propietario</th>
+						<th scope="col" style="text-align: center">Categoria</th>
+						<th scope="col" style="text-align: center">Subcategoria</th>
+						<th scope="col" style="text-align: center">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="item, iStat: ${listaCourse}">
+						<td th:text="${iStat.count}" scope="row" align="center"></td>
+						<td th:text="${item.title}" align="center"></td>
+						<td th:text="${item.subtitle}" align="center"></td>
+						<td th:text="${item.description}" align="center"></td>
+						<td th:text="${item.price}" align="center"></td>
+						<td th:text="${item.status} == 1 ? 'Borrador' : 'Publicado'">
+						<td th:text="${item.lang.lang}" align="center"></td>
+						<td th:text="${item.level.level}" align="center"></td>
+						<td th:text="${item.owner.email}" align="center"></td>
+						<td th:text="${item.category.name}" align="center"></td>
+						<td th:text="${item.subcategory.name}" align="center"></td>						
+						<td align="center">
+							<div class="btn-group" role="group">
+								<button id="btnGroupDrop1" type="button"
+									class="btn btn-primary dropdown-toggle"
+									data-bs-toggle="dropdown" aria-expanded="false">
+									<i class="fa fa-cog"></i>
+								</button>
+								<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+									<li><a class="dropdown-item"
+										th:href="@{'/course-update/'+${item.id}}"><i
+											class="fa fa-pencil" ></i>Actualizar </a></li>
+									<!-- <li><a class="dropdown-item"
+										th:href="@{'/course-publicar/'+${item.id}}">Estado<i
+											class="fa fa-pencil" 
+											
+											></i> </a></li> -->
+									<li><a class="dropdown-item"
+										th:href="@{'/course-delete/'+${item.id}}"><i
+											class="fa fa-trash"></i> Eliminar</a></li>
+									<li><a class="dropdown-item"
+										th:href="@{'/course-details/'+${item.id}}"><i
+											class="fa fa-eye"></i> Ver detalles</a></li>
+								</ul>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel" th:text="${action}"><i class="fa fa-plus"></i> </h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<form action="#" th:action="@{/course-create}" method="post"
+						th:object="${course}" class="row g-3 needs-validation" enctype="multipart/form-data">
+						<div class="modal-body">
+							
+							<div class="row">
+								<div class="col-8 col-sm-6">
+									<input type="text" th:field="*{id}" class="form-control"
+									style="display: none"></input> 
+																			
+									<input type="text" th:field="*{status}" class="form-control"
+									style="display: none"></input> 
+																		 
+									<label for="name">Titulo:</label>
+									<input type="text" class="form-control" id="title"
+									th:field="*{title}" />
+																		
+									<label for="descripcion">Subtitulo:</label> 
+									<input type="text" class="form-control" id="subtitle"
+									th:field="*{subtitle}" />
+																				
+									<label for="descripcion">Descripción:</label> 
+									<input type="text" class="form-control" id="description"
+									th:field="*{description}" />
+																		
+									<label for="descripcion">Precio:</label> 
+									<input type="number" class="form-control" id="price"
+									th:field="*{price}" />
+									
+									<label>imagen</label>
+									<input type="file"  name="image" id="image" />
+								</div>
+								<div class="col-4 col-sm-6">										
+								 <label class="form-label">Lenguaje:</label><br/>
+									<select required="required" class="form-select" id="lang_id" name="lang_id" aria-label="Ingeniería">
+										<option selected>Seleccione su lenguaje...</option>
+										<option th:each="item:${lang}" th:text="${item.lang}" th:selected="${item.id == course.lang.id}" th:value="${item.id}"></option>
+									</select>
+																	
+									<label class="form-label">Nivel:</label><br/>
+									<select required="required" class="form-select" id="level_id" name="level_id" aria-label="Ingeniería">
+										<option selected>Seleccione su nivel ...</option>
+										<option th:each="item:${level}" th:text="${item.level}" th:selected="${item.id == course.level.id}" th:value="${item.id}"></option>
+									</select> 
+																		
+									<label class="form-label">Categoría:</label><br/>
+									<select required="required" class="form-select" id="category_id" name="category_id" aria-label="Ingeniería">
+										<option selected>Seleccione su categoría...</option>
+										<option th:each="item:${category}" th:text="${item.name}" th:selected="${item.id == course.category.id}" th:value="${item.id}"></option>
+									</select>
+																		
+									<label class="form-label">Subcategoria:</label><br/>
+									<select required="required" class="form-select" id="subcategory_id" name="subcategory_id" aria-label="Ingeniería">
+									       <option selected>Seleccione su subcategoria...</option>
+									       <option th:each="item:${subcategory}" th:text="${item.name}" th:selected="${item.id == course.subcategory.id}" th:value="${item.id}"></option>
+									</select> 
+								</div>
+								<div class="col-4 col-sm-8">
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"data-bs-dismiss="modal"><i class="fa fa-times"></i>  Cancelar</button>
+							<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>  Guardar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<script type="text/javascript">
+				document.addEventListener('DOMContentLoaded', function() {
+				  'use strict'
+
+				  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+				  var forms = document.querySelectorAll('.needs-validation')
+
+				  // Loop over them and prevent submission
+				  Array.prototype.slice.call(forms)
+				    .forEach(function (form) {
+				      form.addEventListener('submit', function (event) {
+				        if (!form.checkValidity()) {
+				          event.preventDefault()
+				          event.stopPropagation()
+				        }
+				        form.classList.add('was-validated')
+				      }, false)
+				    })
+				});
+			</script>
+			<script type="text/javascript" th:if="${course.id != null}">
+				document.addEventListener('DOMContentLoaded', function() {
+					console.log("Cargando Modal");
+					var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+					myModal.show();
+				});
+			</script>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout_base}">
+<head>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container">
+			<div class="jumbotron bg-dark py-4 px-4 text-white">
+			
+				<div class="row">
+					<div class="col-8">
+						<div class="mb-1">
+							<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+							  <ol class="breadcrumb">
+							    <li class="breadcrumb-item"><a th:text="${course.category.name}"></a></li>
+							    <li class="breadcrumb-item active" aria-current="page"><a th:text="${course.subcategory.name}"></a></li>
+							  </ol>
+							</nav>
+			            </div>
+		            	<p th:text="${course.title}" class="fs-1 mb-1"></p>
+		            	<p th:text="${course.subtitle}" class="fs m-1"></p>
+		            	<p th:text="${course.description}" class="fs-5 m-0"></p>
+						<p class="fs-6 m-0">Creado por <span th:text="${course.owner.name}"></span></p>
+		            	<p class="fs-6 m-0">Lenguaje: <span th:text="${course.lang.lang}"></span></p>
+		            	<p class="fs-6 m-0">Nivel: <span th:text="${course.level.level}"></span></p>
+		            	<p class="fs-6 m-0">Publicado: <span th:text="${course.published}"></span></p>
+					</div>
+					<div class="col-4 align-self-end d-flex justify-content-end" >
+						<div sec:authorize="hasRole('ROLE_TEACHER')">
+							<div th:if="${course.status} == 1">
+								<a type="button" class="btn btn-primary me-2" th:href="@{'/course-publicar/'+${course.id}+'/2'}">Publicar</a>
+							</div>
+							<div th:if="${course.status} == 2">
+								<p >Publicado</p>	
+							</div>
+						</div>
+					</div>
+					
+				</div>
+	        </div>
+	        <div class="mt-1">
+				<p class="fs-3 fw-bold">Lo que aprenderas</p>
+	        </div>
+	        <div class="mb-3 row">
+	        	<div class="col-6">
+	        		<p class="fs-2 fw-bold">Contenido del curso</p>
+	        		
+	        		<div class="row">
+	        			<!-- Listado de actividades del curso -->
+	        			<div th:each="item:${listaCourseActivity}">
+	        				<div class="col">
+		        				<p th:text="${item.title}" class="fs-5 fw-light"></p>
+		        				<div sec:authorize="hasRole('ROLE_TEACHER')">
+		        					<a type="button" class="btn btn-primary me-2" th:href="@{'/activity-update/'+ ${course.id} +'/'+ ${item.id}}">Editar</a>
+		        					<a type="button" class="btn btn-danger me-2" th:href="@{'/activity-delete/'+ ${course.id} +'/'+ ${item.id}}">Eliminar</a>
+		        				</div>
+		        			</div>
+	        			</div>
+	        		</div>
+	        	</div>
+	        	<div class="col-2">
+	        		<div sec:authorize="hasRole('ROLE_TEACHER')">
+		        		<button type="button" class="btn btn-primary me-2"
+		        			data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar actividad</button>
+		        	</div>
+	        	</div>
+	        	
+	        	<div class="col-4">
+	        		<div class="card mx-auto" style="width: 20rem; ">
+					  	<div th:if="${course.image}">
+        					<img th:src="@{'/uploads/courses/'+${course.image}}" class="card-img-top" alt="...">
+        				</div>
+        				<div th:unless="${course.image}">
+        					<img th:src="@{'/uploads/default.png'}" class="card-img-top" alt="...">
+        				</div>
+					  	<div class="card-body">
+					    	<h5 th:text="${course.title}" class="card-title"></h5>
+					    	<p th:text="${course.description}" class="card-text"></p>
+					    	<div sec:authorize="hasRole('ROLE_TEACHER')">
+						    	<div class="d-flex justify-content-center">
+						    		<a th:href="@{'/course-update/'+${course.id}}" class="btn btn-primary">Editar informacion</a>
+						    	</div>
+					    	</div>
+					  	</div>
+					</div>
+	        	</div>
+	        	
+	        	<!-- Modal -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel" th:text="${action}"><i class="fa fa-plus"></i></h5>
+				        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				      </div>
+				      <div class="modal-body">
+				        <form action="#" th:action="@{/activity-create}" method="post"
+							th:object="${courseActivity}" class="row g-3 needs-validation" enctype="multipart/form-data">
+								<div class="row">
+									<div class="col-lg-12">
+									
+										<input type="text" th:field="*{id}" id="id" name="id" class="form-control" style="display: none" />
+										<input type="text" th:value="${course.id}" id="course_id" name="course_id" class="form-control" style="display: none" />
+										
+										<div class="mb-3">
+											<label for="name">Titulo:</label>
+											<input type="text" class="form-control" id="title" name="title" th:field="*{title}" />
+										</div>
+										<div class="mb-3">
+											<label for="descripcion">Descripcion:</label> 
+											<input type="text" class="form-control" id="description" name="description" th:field="*{description}" />
+										</div>
+										<div class="mb-3">
+											<label for="descripcion">Duracion:</label> 
+											<input type="text" class="form-control" id="duration" name="duration" th:field="*{duration}" />
+										</div>
+										
+										<div class="mb-3">
+											<label>Archivo</label>
+											<input class="form-control" type="file" name="course-file" />
+										</div>
+										<div class="mb-3">
+											<label>Video</label>
+											<input class="form-control" type="file" name="course-video" />
+										</div>
+										
+									</div>
+								</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"data-bs-dismiss="modal"><i class="fa fa-times"></i>  Cancelar</button>
+								<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>  Guardar</button>
+							</div>
+						</form>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				<script type="text/javascript" th:if="${courseActivity.id != null}">
+					document.addEventListener('DOMContentLoaded', function() {
+						var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+						myModal.show();
+					});
+				</script>
+	        </div>
+		</div>
+	</div>
+</body>
+
+</html>

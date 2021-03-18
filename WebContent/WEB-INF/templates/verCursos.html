@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout_base}">
+<head>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container">
+			<div class="jumbotron bg-dark py-4 px-4 text-white">
+			
+				<div class="row">
+					<div class="col-8">
+						<div class="mb-1">
+							<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+							  <ol class="breadcrumb">
+							    <li class="breadcrumb-item"><a th:text="${course.category.name}"></a></li>
+							    <li class="breadcrumb-item active" aria-current="page"><a th:text="${course.subcategory.name}"></a></li>
+							  </ol>
+							</nav>
+			            </div>
+		            	<p th:text="${course.title}" class="fs-1 mb-1"></p>
+		            	<p th:text="${course.subtitle}" class="fs m-1"></p>
+		            	<p th:text="${course.description}" class="fs-5 m-0"></p>
+						<p class="fs-6 m-0">Creado por <span th:text="${course.owner.name}"></span></p>
+		            	<p class="fs-6 m-0">Lenguaje: <span th:text="${course.lang.lang}"></span></p>
+		            	<p class="fs-6 m-0">Nivel: <span th:text="${course.level.level}"></span></p>
+		            	<p class="fs-6 m-0">Publicado: <span th:text="${course.published}"></span></p>
+					</div>
+					<div class="col-4 align-self-end d-flex justify-content-end" >
+						<div sec:authorize="hasRole('ROLE_STUDENT')">
+							<a type="button" class="btn btn-primary me-2">Agregar al carrito</a>
+						</div>
+						<div sec:authorize="!isAuthenticated()">
+							<a type="button" class="btn btn-primary me-2">Agregar al carrito</a>
+						</div>
+					</div>
+					
+				</div>
+	        </div>
+	        <div class="mt-1">
+				<p class="fs-3 fw-bold">Lo que aprenderas</p>
+	        </div>
+	        <div class="mb-3 row">
+	        	<div class="col-6">
+	        		<p class="fs-2 fw-bold">Contenido del curso</p>
+	        		
+	        		<div class="row">
+	        			<!-- Listado de actividades del curso -->
+	        			<div th:each="item:${listaCourseActivity}">
+	        				<div class="col">
+		        				<p th:text="${item.title}" class="fs-5 fw-light"></p>
+		        			</div>
+	        			</div>
+	        		</div>
+	        	</div>
+	        	<div class="col-2">
+	        		
+	        	</div>
+	        	
+	        	<div class="col-4">
+	        		<div class="card mx-auto" style="width: 20rem; ">
+					  	<div th:if="${course.image}">
+        					<img th:src="@{'/uploads/courses/'+${course.image}}" class="card-img-top" alt="...">
+        				</div>
+        				<div th:unless="${course.image}">
+        					<img th:src="@{'/uploads/default.png'}" class="card-img-top" alt="...">
+        				</div>
+					  	<div class="card-body">
+					    	<h5 th:text="${course.title}" class="card-title"></h5>
+					    	<p th:text="${course.description}" class="card-text"></p>
+					  	</div>
+					</div>
+	        	</div>
+	        </div>
+		</div>
+	</div>
+</body>
+
+</html>
