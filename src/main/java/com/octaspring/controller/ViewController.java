@@ -9,8 +9,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.WebRequest;
 
 import com.octaspring.dao.CourseActivityInterface;
 import com.octaspring.dao.CourseInterface;
@@ -72,6 +74,13 @@ public class ViewController {
 		return "login";
 	}
 	
-	
+	@PostMapping("/search/courses")
+	public String seachCourses(Model model, WebRequest request) {
+		String searchword = request.getParameter("searchword");
+		
+		model.addAttribute("listaCourse", courseInterface.findAllBySearch(searchword));
+		
+		return "index";
+	}
 	
 }

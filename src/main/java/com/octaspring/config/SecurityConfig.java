@@ -66,12 +66,14 @@ public class SecurityConfig extends  WebSecurityConfigurerAdapter{
 		protected void configure(HttpSecurity http) throws Exception{
 			// Controllar el acceso a las rutas (acctiones)
 			http.authorizeRequests()
-			.antMatchers("/", "/fbc/**", "/see-course/**","/login", "/register","/user-create","/uploads/**")
-				.permitAll()
-			.antMatchers("/octaspring/**")
-				.hasAnyAuthority("ROLE_ADMIN","ROLE_TEACHER")
-			.anyRequest()
-				.authenticated()
+			.antMatchers("/","/fbc/*","/see-course/","/login", "/register","/user-create","/uploads/","/search/*")
+			.permitAll().antMatchers("/**")
+			.hasAnyRole("ADMIN","TEACHER","STUDENT")
+			//.hasAnyRole("ADMIN")
+			.antMatchers("/teacher/**").hasAnyRole("TEACHER")
+			.antMatchers("/student/**").hasAnyRole("STUDENT")
+			
+			
 			.and()
 			.formLogin()
 			.defaultSuccessUrl("/")

@@ -101,5 +101,6 @@ public class CourseActivity {
 		this.course = course;
 	}
 	
+
 	
 }

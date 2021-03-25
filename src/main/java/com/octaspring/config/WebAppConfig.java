@@ -24,6 +24,7 @@ import com.octaspring.dao.CourseActivityInterface;
 import com.octaspring.dao.CourseInterface;
 import com.octaspring.dao.LangInterface;
 import com.octaspring.dao.LevelInterface;
+import com.octaspring.dao.PurchaseInterface;
 import com.octaspring.dao.RoleInterface;
 import com.octaspring.dao.SubcategoryInterface;
 import com.octaspring.dao.UserPersonInterface;
@@ -32,6 +33,7 @@ import com.octaspring.service.CourseActivityService;
 import com.octaspring.service.CourseService;
 import com.octaspring.service.LangService;
 import com.octaspring.service.LevelService;
+import com.octaspring.service.PurchaseService;
 import com.octaspring.service.RoleService;
 import com.octaspring.service.SubcategoryService;
 import com.octaspring.service.UserPersonService;
@@ -147,6 +149,11 @@ public class WebAppConfig implements ApplicationContextAware{
 	@Bean
 	public CourseActivityInterface getCourseActivity() {
 		return (CourseActivityInterface) new CourseActivityService(this.getDataSource());
+
+	}
+	@Bean
+	public PurchaseInterface getPurchase() {
+		return (PurchaseInterface) new PurchaseService(this.getDataSource());
 
 	}
 }

@@ -13,8 +13,7 @@ public class Course {
 
 	//GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Id
-	@Column(name="id")
-	private Long id;
+	@Column(name="id") Long id;
 	
 	@Column(name="title")
 	private String title;
@@ -183,5 +182,18 @@ public class Course {
 		
 	}
 
-
+	@Override
+	public boolean equals (Object obj) {
+		if(obj instanceof Course) {
+			Course temp = (Course) obj;
+			if (this.id == temp.id) 
+				return true;		
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return (this.id.hashCode());
+	}
 }

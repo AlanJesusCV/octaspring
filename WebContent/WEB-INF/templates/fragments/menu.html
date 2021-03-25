@@ -1,4 +1,5 @@
-<nav th:fragment="main_menu" class="navbar navbar-expand-lg navbar-light bg-light">
+<nav th:fragment="main_menu"
+	class="navbar navbar-expand-lg navbar-light bg-light">
 	<div class="container-fluid">
 		<a class="navbar-brand" th:href="@{/}">OCTA</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -9,87 +10,76 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
-						data-bs-toggle="dropdown" aria-expanded="false">
-						Categorias 
-					</a>
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						Categorias </a>
 					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<li th:each="item: ${menuCategory}">
-							<a class="dropdown-item" th:href="@{'/fbc/'+${item.id}}" th:text="${item.name}" ></a>
-						</li>
-					</ul>
-				</li>
+						<li th:each="item: ${menuCategory}"><a class="dropdown-item"
+							th:href="@{'/fbc/'+${item.id}}" th:text="${item.name}"></a></li>
+					</ul></li>
 				<li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-						role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						Administrador 
-					</a>
+					role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						Administrador </a>
 					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<li>
-							<a class="dropdown-item" href="/octaspring/category">Categorias</a>
+						<li><a class="dropdown-item" href="/octaspring/category">Categorias</a>
 						</li>
 						<li>
 							<hr class="dropdown-divider">
 						</li>
-						<li>
-							<a class="dropdown-item" href="/octaspring/subcategory">Subcategorias</a>
+						<li><a class="dropdown-item" href="/octaspring/subcategory">Subcategorias</a>
 						</li>
 						<li>
 							<hr class="dropdown-divider">
 						</li>
-						<li>
-							<a class="dropdown-item" href="/octaspring/lang">Lenguajes</a>
+						<li><a class="dropdown-item" href="/octaspring/lang">Lenguajes</a>
 						</li>
 						<li>
 							<hr class="dropdown-divider">
 						</li>
-						<li>
-							<a class="dropdown-item" href="/octaspring/role">Roles</a>
+						<li><a class="dropdown-item" href="/octaspring/role">Roles</a>
 						</li>
 						<li>
 							<hr class="dropdown-divider">
 						</li>
-						<li>
-							<a class="dropdown-item" href="/octaspring/level">Level</a>
+						<li><a class="dropdown-item" href="/octaspring/level">Level</a>
 						</li>
 					</ul>
 				</li>
-				<li sec:authorize="hasRole('ROLE_TEACHER')" class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-						role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						Mis cursos 
-					</a>
+				<li sec:authorize="hasRole('ROLE_TEACHER')"
+					class="nav-item dropdown"><a class="nav-link dropdown-toggle"
+					href="#" id="navbarDropdown" role="button"
+					data-bs-toggle="dropdown" aria-expanded="false"> Mis cursos </a>
 					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<li>
-							<a class="dropdown-item" th:href="@{/course}">Mis cursos</a>
-						</li>
-					</ul>
-				</li>
-				<li sec:authorize="hasRole('ROLE_STUDENT')" class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-						role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						Mis cursos 
-					</a>
+						<li><a class="dropdown-item" th:href="@{/course}">Mis
+								cursos</a></li>
+					</ul></li>
+				<li sec:authorize="hasRole('ROLE_STUDENT')"
+					class="nav-item dropdown"><a class="nav-link dropdown-toggle"
+					href="#" id="navbarDropdown" role="button"
+					data-bs-toggle="dropdown" aria-expanded="false"> Mis cursos </a>
 					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<li>
-							<a class="dropdown-item" th:href="@{/student_courses}">Mis cursos</a>
-						</li>
-					</ul>
-				</li>
+						<li><a class="dropdown-item" th:href="@{/student_courses}">Mis
+								cursos</a></li>
+					</ul></li>
 			</ul>
-			<form class="d-flex">
-				<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+			<form class="d-flex" method="POST" th:action="@{/search/courses}">
+				<input class="form-control me-2" name="searchword" type="search"
+					placeholder="Search" aria-label="Search">
 				<button class="btn btn-outline-success" type="submit">Search</button>
 			</form>
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				<li class="nav-item">
-					<a class="nav-link" href="" tabindex="-1"><i class="far fa-shopping-cart"></i> Carrito</a>
-				</li>
+				<li class="nav-item"><a class="nav-link" href="" tabindex="-1"
+					th:href="@{/student/cart}"><i class="far fa-shopping-cart"></i>
+						Carrito</a></li>
 			</ul>
-			<a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="btn btn-secondary me-2">Iniciar Sesion</a>
-			<a sec:authorize="!isAuthenticated()" th:href="@{register}" class="btn btn-secondary me-2">Registrate</a>
-			<a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="btn btn-secondary me-2">Cerrar sesion</a>
+			<a sec:authorize="!isAuthenticated()" th:href="@{/login}"
+				class="btn btn-secondary me-2">Iniciar Sesion</a> <a
+				sec:authorize="!isAuthenticated()" th:href="@{register}"
+				class="btn btn-secondary me-2">Registrate</a> <a
+				sec:authorize="isAuthenticated()" th:href="@{/logout}"
+				class="btn btn-secondary me-2">Cerrar sesion</a>
 		</div>
 	</div>
 </nav>
